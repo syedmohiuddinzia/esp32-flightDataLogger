@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wifi Mode Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        select, input[type="password"] {
+            width: 200px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Configure WiFi</h2>
+    <form action="/setmode" method="POST">
+        <input type="radio" name="mode" value="AP" checked> Access Point<br>
+        <input type="radio" name="mode" value="STA"> Station Mode<br>
+        <b>SSID:</b> <input type="SSID" name="SSID"><br><br>
+        <b>PSWD:</b> <input type="PSWD" name="PSWD"><br><br>
+        <input type="submit" value="Save & Restart">
+    </form>
+</body>
+</html>

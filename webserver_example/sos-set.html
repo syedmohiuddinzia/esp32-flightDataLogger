@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set SOS Configuration</title>
+    <style>
+        /* Inherit all existing styles from main page */
+        html, body, .container, h1, .button, .form-element {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: left;
+            color: #333;
+        }
+
+        .step-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: #2f007a;
+            border-bottom: 2px solid #5716be;
+            padding-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .submit-button {
+            background-color: #2f007a;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="step-container">
+            <h2>Step 1: WhatsApp Activation</h2>
+            <ul>
+                <li>Add the phone number +34 621 331 709 to your Phone Contacts. (Name it as you wish). please double-check the number on the CallMeBot website, because it sometimes changes.</li>
+                <li>Send the following message: "I allow callmebot to send me messages" to the new Contact created (using WhatsApp of course);</li>
+                <li>Wait until you receive the message "API Activated for your phone number. Your APIKEY is XXXXX" from the bot.</li>
+            </ul>
+        </div>
+
+        <div class="step-container">
+            <h2>Step 2: Verify Activation</h2>
+            <li>From Whatsapp Read API and Number</li>
+            <li>Write API and Number in the respected places</li>
+            <li>Enter number without "+" or "00" (Example: 34621331709)</li>
+            <div class="form-element">
+                <label for="apikey">API Key:</label>
+                <input type="text" id="apikey" name="apikey" placeholder="Enter your APIKEY here" required>
+            </div>
+            <div class="form-element">
+                <label for="mobile">Mobile Number:</label>
+                <input type="text" id="mobile" name="mobile" 
+                       placeholder="Enter number here" 
+                       pattern="[0-9]{10,15}" 
+                       title="Enter numbers only without country code prefixes">
+            </div>
+            <div class="form-element">
+                <label for="message">Message:</label>
+                <input type="text" id="message" name="message" placeholder="Enter your message here" required>
+            </div>            
+
+            <button class="submit-button" onclick="validateAndSubmit()">Save Configuration</button>
+        </div>
+    </div>
+
+    <script> 
+        function validateAndSubmit() {
+        const apikey = document.getElementById('apikey').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (!apikey || !mobile || !message) {
+            alert('❌ Please fill in all fields');
+            return;
+        }
+
+        if (!/^\d{10,15}$/.test(mobile)) {
+            alert('❌ Invalid mobile number format. Use numbers only without + or 00');
+            return;
+        }
+
+        fetch(`/save_config?apikey=${encodeURIComponent(apikey)}&mobile=${encodeURIComponent(mobile)}&message=${encodeURIComponent(message)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to save configuration');
+                return response.text();
+            })
+            .then(data => {
+                alert('✅ Configuration saved successfully!');
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                alert('❌ Error saving configuration');
+                console.error('Error:', error);
+            });
+        }
+
+    </script>
+</body>
+</html>
